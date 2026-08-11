@@ -13,11 +13,13 @@ The design keeps a soft tide/water feel while using gold accents for childhood c
 ## Pages
 
 - `site/index.html`: home and Mommy's message
+- `site/reigns-story.html`: Reign's story and editable cancer information section
 - `site/events.html`: gatherings and event details
 - `site/photos.html`: photo gallery
 - `site/support.html`: donation and support links
 - `site/shop.html`: Printful-ready shop page
 - `site/stories.html`: note/story form and approved stories
+- `site/contact.html`: contact placeholder page
 
 ## Local Preview
 
