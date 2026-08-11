@@ -1,0 +1,62 @@
+services:
+  site:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    volumes:
+      - ./site:/usr/share/nginx/html:ro
+    networks:
+      - coolify
+    labels:
+      traefik.enable: "true"
+      traefik.http.middlewares.reigns-tide-gzip.compress: "true"
+      traefik.http.middlewares.reigns-tide-https.redirectscheme.scheme: "https"
+      traefik.http.routers.reigns-tide-http.entryPoints: "http"
+      traefik.http.routers.reigns-tide-http.middlewares: "reigns-tide-https"
+      traefik.http.routers.reigns-tide-http.rule: "Host(`reignstide.org`) || Host(`www.reignstide.org`)"
+      traefik.http.routers.reigns-tide-https.entryPoints: "https"
+      traefik.http.routers.reigns-tide-https.middlewares: "reigns-tide-gzip"
+      traefik.http.routers.reigns-tide-https.rule: "Host(`reignstide.org`) || Host(`www.reignstide.org`)"
+      traefik.http.routers.reigns-tide-https.tls: "true"
+      traefik.http.routers.reigns-tide-https.tls.certresolver: "letsencrypt"
+      traefik.http.services.reigns-tide.loadbalancer.server.port: "80"
+
+  directus:
+    image: directus/directus:11
+    restart: unless-stopped
+    volumes:
+      - ./cms/database:/directus/database
+      - ./cms/uploads:/directus/uploads
+      - ./cms/extensions:/directus/extensions
+    environment:
+      SECRET: ${DIRECTUS_SECRET}
+      ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD}
+      DB_CLIENT: sqlite3
+      DB_FILENAME: /directus/database/data.db
+      PUBLIC_URL: ${PUBLIC_URL}
+      CORS_ENABLED: "true"
+      CORS_ORIGIN: ${CORS_ORIGIN}
+      WEBSOCKETS_ENABLED: "true"
+      TURNSTILE_SECRET: ${TURNSTILE_SECRET}
+      TURNSTILE_HOSTNAMES: ${TURNSTILE_HOSTNAMES}
+      PRINTFUL_API_KEY: ${PRINTFUL_API_KEY}
+      PRINTFUL_STORE_ID: ${PRINTFUL_STORE_ID:-}
+    networks:
+      - coolify
+    labels:
+      traefik.enable: "true"
+      traefik.http.middlewares.reigns-tide-cms-gzip.compress: "true"
+      traefik.http.middlewares.reigns-tide-cms-https.redirectscheme.scheme: "https"
+      traefik.http.routers.reigns-tide-cms-http.entryPoints: "http"
+      traefik.http.routers.reigns-tide-cms-http.middlewares: "reigns-tide-cms-https"
+      traefik.http.routers.reigns-tide-cms-http.rule: "Host(`cms.reignstide.org`)"
+      traefik.http.routers.reigns-tide-cms-https.entryPoints: "https"
+      traefik.http.routers.reigns-tide-cms-https.middlewares: "reigns-tide-cms-gzip"
+      traefik.http.routers.reigns-tide-cms-https.rule: "Host(`cms.reignstide.org`)"
+      traefik.http.routers.reigns-tide-cms-https.tls: "true"
+      traefik.http.routers.reigns-tide-cms-https.tls.certresolver: "letsencrypt"
+      traefik.http.services.reigns-tide-cms.loadbalancer.server.port: "8055"
+
+networks:
+  coolify:
+    external: true

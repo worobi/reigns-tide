@@ -1,0 +1,40 @@
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN}
+      CMS_DOMAIN: ${CMS_DOMAIN}
+      CADDY_EMAIL: ${CADDY_EMAIL}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./site:/srv/site:ro
+      - ./caddy/data:/data
+      - ./caddy/config:/config
+    depends_on:
+      - directus
+
+  directus:
+    image: directus/directus:11
+    restart: unless-stopped
+    volumes:
+      - ./cms/database:/directus/database
+      - ./cms/uploads:/directus/uploads
+      - ./cms/extensions:/directus/extensions
+    environment:
+      SECRET: ${DIRECTUS_SECRET}
+      ADMIN_EMAIL: ${DIRECTUS_ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${DIRECTUS_ADMIN_PASSWORD}
+      DB_CLIENT: sqlite3
+      DB_FILENAME: /directus/database/data.db
+      PUBLIC_URL: ${PUBLIC_URL}
+      CORS_ENABLED: "true"
+      CORS_ORIGIN: ${CORS_ORIGIN}
+      WEBSOCKETS_ENABLED: "true"
+      TURNSTILE_SECRET: ${TURNSTILE_SECRET}
+      TURNSTILE_HOSTNAMES: ${TURNSTILE_HOSTNAMES}
+      PRINTFUL_API_KEY: ${PRINTFUL_API_KEY}
+      PRINTFUL_STORE_ID: ${PRINTFUL_STORE_ID:-}

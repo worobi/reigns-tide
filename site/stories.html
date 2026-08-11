@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Stories | Reign's Tide</title>
+    <meta name="description" content="Leave a note, story, or favorite memory for Reign's family.">
+    <meta property="og:title" content="Reign's Tide Stories">
+    <meta property="og:description" content="Leave a note, story, or favorite memory for Reign's family.">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="assets/styles.css">
+    <script src="assets/config.js"></script>
+    <script src="assets/app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Reign's Tide home">
+        <img class="brand-logo" src="assets/reign-logo.png" alt="">
+        <span>Reign's Tide</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="events.html">Events</a>
+        <a href="photos.html">Photos</a>
+        <a href="support.html">Support</a>
+        <a href="shop.html">Shop</a>
+        <a href="stories.html" aria-current="page">Stories</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <p class="eyebrow">Remembrance</p>
+        <h1>Notes and Stories</h1>
+        <p>Leave a note, story, or favorite memory. Submissions are reviewed before they appear publicly.</p>
+      </section>
+
+      <section class="section stories-layout">
+        <div class="story-form-wrap">
+          <p class="eyebrow">Share a memory</p>
+          <h2>Leave a note or story</h2>
+          <p>
+            Add a note, story, or favorite memory for the people who love Reign.
+          </p>
+          <form id="story-form">
+            <label>
+              Your name
+              <input name="name" autocomplete="name" required maxlength="100">
+            </label>
+            <label>
+              Relationship, if you want to share it
+              <input name="relationship" maxlength="120">
+            </label>
+            <label>
+              Note, story, or favorite memory
+              <textarea name="message" required maxlength="2000"></textarea>
+            </label>
+            <label class="hidden-field" aria-hidden="true">
+              Leave this empty
+              <input name="website" tabindex="-1" autocomplete="off">
+            </label>
+            <div class="spam-check" id="turnstile-widget" aria-live="polite"></div>
+            <button class="button primary" type="submit">Submit note</button>
+            <p class="form-status" id="form-status" role="status"></p>
+          </form>
+        </div>
+        <div class="stories-list-wrap">
+          <div class="section-heading compact">
+            <p class="eyebrow">Shared with care</p>
+            <h2>Approved Stories</h2>
+          </div>
+          <div class="stories-list" id="stories-list" aria-live="polite"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Reign's Tide</p>
+      <a href="index.html">Back home</a>
+    </footer>
+  </body>
+</html>
