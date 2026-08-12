@@ -515,6 +515,10 @@ h3 {
   margin-top: 24px;
 }
 
+.compact-actions {
+  margin-top: 18px;
+}
+
 .light-button {
   background: var(--white);
   border-color: var(--line);

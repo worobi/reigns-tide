@@ -70,6 +70,12 @@ const sampleData = {
       url: "https://gofund.me/27feaa2f4",
     },
     {
+      title: "Reign's Meal Train",
+      description: "Help with meals and practical support for Kerrin Bowerson and family.",
+      button_label: "Open Meal Train",
+      url: "https://www.mealtrain.com/trains/9dy1dv",
+    },
+    {
       title: "Reign's Tide Shop",
       description: "Print-on-demand items honoring Reign. Proceeds after product cost go toward Kerrin Bowerson / Reign's Tide.",
       button_label: "Visit shop",
