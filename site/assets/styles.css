@@ -568,6 +568,10 @@ h3 {
   grid-column: span 2;
 }
 
+.event-card.featured-card {
+  grid-column: span 1;
+}
+
 .event-time {
   color: var(--ink);
   font-weight: 900;

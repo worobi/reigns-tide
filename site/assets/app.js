@@ -32,8 +32,8 @@ const sampleData = {
       title: "Michigan Beach Day for Reign",
       event_date: "2026-08-22T15:00:00-04:00",
       time_label: "3:00 PM - 8:00 PM, release at dusk",
-      location: "Lakeside Beach",
-      address: "Port Huron, MI",
+      location: "Lakeside Park",
+      address: "3670 Gratiot Ave, Port Huron, MI 48060",
       description:
         "For those in Michigan who would like to come together and are unable to make it to Florida, we will gather for a beach day to honor Reign's homecoming to Heaven.",
       highlights: [
@@ -42,7 +42,7 @@ const sampleData = {
         "Come together in Michigan to honor Reign",
       ],
       button_label: "Get directions",
-      button_url: "https://www.google.com/maps/search/?api=1&query=Lakeside%20Beach%2C%20Port%20Huron%2C%20MI",
+      button_url: "https://www.google.com/maps/search/?api=1&query=3670%20Gratiot%20Ave%2C%20Port%20Huron%2C%20MI%2048060",
     },
   ],
   photos: [
