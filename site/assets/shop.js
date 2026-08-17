@@ -1,14 +1,6 @@
 const shopConfig = window.REIGNS_TIDE_CONFIG || {};
 
-const fallbackProducts = [
-  {
-    title: "Reign's Tide items coming soon",
-    description: "Printful products will appear here once the shop API is connected.",
-    image: "assets/reign-logo.png",
-    url: "",
-    price: "",
-  },
-];
+const fallbackProducts = [];
 
 const escapeHtml = (value = "") =>
   String(value)
@@ -35,6 +27,11 @@ const fetchProducts = async () => {
 const renderProducts = (products) => {
   const target = document.querySelector("#product-list");
 
+  if (!products.length) {
+    target.innerHTML = `<p class="empty">No shop items are listed right now.</p>`;
+    return;
+  }
+
   target.innerHTML = products
     .map(
       (product) => `
@@ -49,7 +46,7 @@ const renderProducts = (products) => {
             ${
               product.url
                 ? `<a class="button primary" href="${escapeHtml(product.url)}" rel="noopener noreferrer" target="_blank">View item</a>`
-                : `<span class="product-coming-soon">Products will be added soon.</span>`
+                : `<span class="product-coming-soon">Item details are being finalized.</span>`
             }
           </div>
         </article>

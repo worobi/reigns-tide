@@ -8,7 +8,7 @@ const turnstileState = {
   widgetId: null,
 };
 
-const sampleData = {
+const fallbackData = {
   events: [
     {
       title: "Celebrating Our Sweet Reign",
@@ -45,27 +45,11 @@ const sampleData = {
       button_url: "https://www.google.com/maps/search/?api=1&query=3670%20Gratiot%20Ave%2C%20Port%20Huron%2C%20MI%2048060",
     },
   ],
-  photos: [
-    {
-      title: "Photo title placeholder",
-      caption: "Add a photo caption here.",
-      image: null,
-    },
-    {
-      title: "Photo title placeholder",
-      caption: "Add a photo caption here.",
-      image: null,
-    },
-    {
-      title: "Photo title placeholder",
-      caption: "Add a photo caption here.",
-      image: null,
-    },
-  ],
+  photos: [],
   donation_links: [
     {
       title: "Reign's GoFundMe",
-      description: "Support link for Reign's family.",
+      description: "Help Kerrin Bowerson and Reign's family with expenses and needs during this time.",
       button_label: "Open GoFundMe",
       url: "https://gofund.me/27feaa2f4",
     },
@@ -82,13 +66,7 @@ const sampleData = {
       url: "shop.html",
     },
   ],
-  remembrance_notes: [
-    {
-      name: "Name placeholder",
-      relationship: "Relationship placeholder",
-      message: "Add a sample note or story here.",
-    },
-  ],
+  remembrance_notes: [],
 };
 
 const formatDate = (value) => {
@@ -120,7 +98,7 @@ const directusFileUrl = (file) => {
 };
 
 const fetchItems = async (collection, query = "") => {
-  if (!cmsUrl) return sampleData[collection] || [];
+  if (!cmsUrl) return fallbackData[collection] || [];
 
   try {
     const response = await fetch(`${cmsUrl}/items/${collection}${query}`);
@@ -129,7 +107,7 @@ const fetchItems = async (collection, query = "") => {
     return payload.data || [];
   } catch (error) {
     console.warn(error);
-    return sampleData[collection] || [];
+    return fallbackData[collection] || [];
   }
 };
 
@@ -156,13 +134,13 @@ const initTurnstile = () => {
 
   if (window.location.protocol === "file:") {
     container.innerHTML =
-      '<p class="spam-check-note">Spam protection is connected for the live site and will load on reignstide.org.</p>';
+      '<p class="spam-check-note">Spam protection is active on the live site at reignstide.org.</p>';
     return;
   }
 
   if (!turnstileSiteKey) {
     container.innerHTML =
-      '<p class="spam-check-note">Spam protection will appear here once the Turnstile site key and verified story endpoint are connected.</p>';
+      '<p class="spam-check-note">Story submissions are temporarily unavailable while spam protection is checked.</p>';
     return;
   }
 
@@ -212,7 +190,7 @@ const renderEvents = (events) => {
   const target = document.querySelector("#events-list");
   if (!target) return;
   if (!events.length) {
-    target.innerHTML = `<p class="empty">No events have been published yet.</p>`;
+    target.innerHTML = `<p class="empty">No gatherings are listed right now.</p>`;
     return;
   }
 
@@ -251,7 +229,7 @@ const renderPhotos = (photos) => {
   const target = document.querySelector("#photos-list");
   if (!target) return;
   if (!photos.length) {
-    target.innerHTML = `<p class="empty">No photos have been published yet.</p>`;
+    target.innerHTML = `<p class="empty">No photos are listed right now.</p>`;
     return;
   }
 
@@ -279,7 +257,7 @@ const renderSupport = (links) => {
   const target = document.querySelector("#support-list");
   if (!target) return;
   if (!links.length) {
-    target.innerHTML = `<p class="empty">No support links have been published yet.</p>`;
+    target.innerHTML = `<p class="empty">No support links are listed right now.</p>`;
     return;
   }
 
@@ -305,7 +283,7 @@ const renderStories = (stories) => {
   const target = document.querySelector("#stories-list");
   if (!target) return;
   if (!stories.length) {
-    target.innerHTML = `<p class="empty">Approved stories will appear here.</p>`;
+    target.innerHTML = `<p class="empty">No approved stories are listed right now.</p>`;
     return;
   }
 
@@ -329,7 +307,7 @@ const submitStory = async (form) => {
   if (data.get("website")) return;
 
   if (!cmsUrl && !storySubmitEndpoint) {
-    status.textContent = "The story form will turn on once the CMS is connected.";
+    status.textContent = "Story submissions are temporarily unavailable.";
     return;
   }
 
