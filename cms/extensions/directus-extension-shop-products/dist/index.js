@@ -18,7 +18,7 @@ export default {
   id: "shop-products",
   handler: (router, { env }) => {
     router.get("/", async (req, res) => {
-      if (!isEnabled(env.STORE_ENABLED)) {
+      if (!isEnabled(env.STORE_ENABLED ?? process.env.STORE_ENABLED)) {
         return res.json({ products: [] });
       }
 
