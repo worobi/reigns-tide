@@ -12,11 +12,13 @@ const asProduct = (product) => {
   };
 };
 
+const isEnabled = (value) => value === true || String(value).toLowerCase() === "true";
+
 export default {
   id: "shop-products",
   handler: (router, { env }) => {
     router.get("/", async (req, res) => {
-      if (env.STORE_ENABLED !== "true") {
+      if (!isEnabled(env.STORE_ENABLED)) {
         return res.json({ products: [] });
       }
 
