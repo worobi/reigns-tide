@@ -126,6 +126,7 @@ services:
   wpcli:
     image: wordpress:cli-php8.3
     profiles: ["tools"]
+    user: "33:33"
     depends_on:
       wordpress-db:
         condition: service_healthy
@@ -136,6 +137,7 @@ services:
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
       WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WP_CLI_CACHE_DIR: /tmp/wp-cli-cache
     networks:
       - wordpress
 
