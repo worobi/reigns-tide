@@ -23,5 +23,14 @@ www.{$SITE_DOMAIN} {
 }
 
 {$SHOP_DOMAIN} {
-	reverse_proxy wordpress:80
+	root * /srv/site
+	encode zstd gzip
+	try_files {path} /shop.html
+	file_server
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+	}
 }

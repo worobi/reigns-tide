@@ -378,6 +378,24 @@ h3 {
   color: var(--muted);
 }
 
+.product-body label {
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.product-body select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+  padding: 11px 12px;
+}
+
 .product-price {
   color: var(--sea-dark);
   font-size: 1.05rem;

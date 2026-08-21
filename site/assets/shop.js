@@ -1,6 +1,7 @@
 const shopConfig = window.REIGNS_TIDE_CONFIG || {};
 
 const fallbackProducts = [];
+const checkoutEndpoint = `${shopConfig.shopProductsEndpoint || ""}/checkout`;
 
 const escapeHtml = (value = "") =>
   String(value)
@@ -41,13 +42,18 @@ const renderProducts = (products) => {
           </div>
           <div class="product-body">
             <h3>${escapeHtml(product.title || "Shop item")}</h3>
-            ${product.price ? `<p class="product-price">${escapeHtml(product.price)}</p>` : ""}
-            <p>${escapeHtml(product.description || "")}</p>
-            ${
-              product.url
-                ? `<a class="button primary" href="${escapeHtml(product.url)}" rel="noopener noreferrer" target="_blank">View item</a>`
-                : `<span class="product-coming-soon">Item details are being finalized.</span>`
-            }
+            <label>
+              <span>Option</span>
+              <select data-variant-select="${escapeHtml(product.id)}">
+                ${(product.variants || [])
+                  .map(
+                    (variant) =>
+                      `<option value="${escapeHtml(variant.id)}" ${variant.in_stock ? "" : "disabled"}>${escapeHtml(variant.name)}${variant.price ? ` - $${escapeHtml(variant.price)}` : ""}</option>`,
+                  )
+                  .join("")}
+              </select>
+            </label>
+            <button class="button primary" type="button" data-checkout-product="${escapeHtml(product.id)}">Checkout</button>
           </div>
         </article>
       `,
@@ -55,4 +61,33 @@ const renderProducts = (products) => {
     .join("");
 };
 
-fetchProducts().then(renderProducts);
+const startCheckout = async (button) => {
+  const productId = button.dataset.checkoutProduct;
+  const select = document.querySelector(`[data-variant-select="${CSS.escape(productId)}"]`);
+  const variantId = select?.value || "";
+
+  button.disabled = true;
+  button.textContent = "Opening checkout...";
+
+  try {
+    const response = await fetch(checkoutEndpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ variant_id: variantId, quantity: 1 }),
+    });
+    const payload = await response.json();
+    if (!response.ok || !payload.url) throw new Error(payload.error || "Checkout failed");
+    window.location.href = payload.url;
+  } catch (error) {
+    button.textContent = "Try again";
+    button.disabled = false;
+    alert(error.message || "Checkout could not be started.");
+  }
+};
+
+fetchProducts().then((products) => {
+  renderProducts(products);
+  document.querySelectorAll("[data-checkout-product]").forEach((button) => {
+    button.addEventListener("click", () => startCheckout(button));
+  });
+});

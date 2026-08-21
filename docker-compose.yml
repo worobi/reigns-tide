@@ -40,66 +40,6 @@ services:
       STORE_ENABLED: ${STORE_ENABLED:-false}
       PRINTFUL_API_KEY: ${PRINTFUL_API_KEY}
       PRINTFUL_STORE_ID: ${PRINTFUL_STORE_ID:-}
-
-  wordpress-db:
-    image: mariadb:11.4
-    restart: unless-stopped
-    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-    volumes:
-      - ./wordpress/db:/var/lib/mysql
-    environment:
-      MARIADB_DATABASE: ${WORDPRESS_DB_NAME}
-      MARIADB_USER: ${WORDPRESS_DB_USER}
-      MARIADB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
-      MARIADB_ROOT_PASSWORD: ${WORDPRESS_DB_ROOT_PASSWORD}
-    healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-
-  wordpress:
-    image: wordpress:php8.3-apache
-    restart: unless-stopped
-    depends_on:
-      wordpress-db:
-        condition: service_healthy
-    volumes:
-      - ./wordpress/html:/var/www/html
-    environment:
-      WORDPRESS_DB_HOST: wordpress-db:3306
-      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
-      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
-      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
-      WORDPRESS_AUTH_KEY: ${WORDPRESS_AUTH_KEY}
-      WORDPRESS_SECURE_AUTH_KEY: ${WORDPRESS_SECURE_AUTH_KEY}
-      WORDPRESS_LOGGED_IN_KEY: ${WORDPRESS_LOGGED_IN_KEY}
-      WORDPRESS_NONCE_KEY: ${WORDPRESS_NONCE_KEY}
-      WORDPRESS_AUTH_SALT: ${WORDPRESS_AUTH_SALT}
-      WORDPRESS_SECURE_AUTH_SALT: ${WORDPRESS_SECURE_AUTH_SALT}
-      WORDPRESS_LOGGED_IN_SALT: ${WORDPRESS_LOGGED_IN_SALT}
-      WORDPRESS_NONCE_SALT: ${WORDPRESS_NONCE_SALT}
-      WORDPRESS_CONFIG_EXTRA: |
-        define('WP_MEMORY_LIMIT', '256M');
-        define('WP_MAX_MEMORY_LIMIT', '512M');
-        define('FORCE_SSL_ADMIN', true);
-        if (isset($$_SERVER['HTTP_X_FORWARDED_PROTO']) && strpos($$_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false) {
-          $$_SERVER['HTTPS'] = 'on';
-        }
-        define('DISALLOW_FILE_EDIT', true);
-
-  wpcli:
-    image: wordpress:cli-php8.3
-    profiles: ["tools"]
-    user: "33:33"
-    depends_on:
-      wordpress-db:
-        condition: service_healthy
-    volumes:
-      - ./wordpress/html:/var/www/html
-    environment:
-      WORDPRESS_DB_HOST: wordpress-db:3306
-      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
-      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
-      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
-      WP_CLI_CACHE_DIR: /tmp/wp-cli-cache
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      STRIPE_CURRENCY: ${STRIPE_CURRENCY:-usd}
+      SHOP_PUBLIC_URL: ${SHOP_PUBLIC_URL:-https://reignstide.org/shop.html}
