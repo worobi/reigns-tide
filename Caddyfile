@@ -21,3 +21,7 @@ www.{$SITE_DOMAIN} {
 {$CMS_DOMAIN} {
 	reverse_proxy directus:8055
 }
+
+{$SHOP_DOMAIN} {
+	reverse_proxy wordpress:80
+}

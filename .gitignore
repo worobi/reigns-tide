@@ -1,5 +1,6 @@
 cms/database/
 cms/uploads/
+wordpress/
 caddy/data/
 caddy/config/
 .env
