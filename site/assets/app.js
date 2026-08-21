@@ -63,7 +63,7 @@ const fallbackData = {
       title: "Reign's Tide Shop",
       description: "Print-on-demand items honoring Reign. Proceeds after product cost go toward Kerrin Bowerson / Reign's Tide.",
       button_label: "Visit shop",
-      url: "shop.html",
+      url: "https://shop.reignstide.org",
     },
   ],
   remembrance_notes: [],
